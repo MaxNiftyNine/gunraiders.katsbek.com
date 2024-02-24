@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black
+        }
+
+        h1 {
+            color: white;
+        }
+
+        .news-item {
+            background-color: #f4f4f4;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .news-title {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .news-date {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .news-content {
+            color: #333;
+            font-size: 16px;
+        }
+
+        a {
+            color: orange;
+        }
+    </style>
+    <script>
+        function loadMore() {
+            let newCount = parseInt('{{ count }}') + 5;
+            if (newCount > 200) {
+                newCount = 200;
+            }
+            window.location.href = `/news/${newCount}`;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>News</h1>
+    {% for item in news_items %}
+    <div class="news-item">
+        <div class="news-title">{{ item.title }}</div>
+        <div class="news-date">{{ item.created.split('T')[0] }}</div>
+        <div class="news-content">{{ item.content }}</div>
+    </div>
+    {% endfor %}
+    <button onclick="loadMore()">Load More</button>
+</body>
+
+</html>

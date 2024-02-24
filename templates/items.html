@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Items</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #000000}
+        h1 {color: #ffffff}
+        .item { background-color: #f4f4f4; margin-bottom: 20px; padding: 15px; border-radius: 8px; }
+        .title { color: #333; font-size: 26px; margin-bottom: 5px; }
+        .date { color: #666; font-size: 14px; margin-bottom: 10px; }
+        .price { color: #454B1B; font-size: 20px; }
+        .asset_id { color: #999; font-size: 10px; }
+        .rarity { color: #111; font-size: 18px; }
+        a{ color: orange }
+    </style>
+</head>
+<body>
+
+    <h1>Catalog</h1>
+
+    <form action="/items" method="get">
+        <input type="text" name="search" placeholder="Search items...">
+        <input type="submit" value="Search">
+    </form>
+
+    <div>
+        <a href="/items?order_by=price&order_type=asc">Order by Price (Ascending)</a>
+        |
+        <a href="/items?order_by=price&order_type=desc">Order by Price (Descending)</a>
+        |
+        <a href="/items?order_by=rarity&order_type=asc">Order by Rarity (Ascending)</a>
+        |
+        <a href="/items?order_by=rarity&order_type=desc">Order by Rarity (Descending)</a>
+    </div>
+    
+    {% for item in items %}
+    <div class="item">
+        <div class="title">{{ item.item_name }}</div>
+        <div class="price">{{ item.item_price }}RC</div>
+        <div class="rarity">Rarity: {{ item.rarity }}</div>
+        <div class="date">{{ item.release_date }}</div>
+        <div class="asset_id">Asset_ID: {{ item.asset_id }}</div>
+    </div>
+    {% endfor %}
+
+</body>
+</html>

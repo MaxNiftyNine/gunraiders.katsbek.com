@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black
+        }
+
+        h1 {
+            color: white;
+        }
+
+        .news-item {
+            background-color: #f4f4f4;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .news-title {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .news-date {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .news-content {
+            color: #333;
+            font-size: 16px;
+        }
+
+        a {
+            color: orange;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>{{ banner|safe }}</h1>
+    <h5>Newest Update: {{ ver }}</h5>
+
+    {% for item in news_items %}
+    <div class="news-item">
+        <div class="news-title">{{ item.title }}</div>
+        <div class="news-date">{{ item.created.split('T')[0] }}</div>
+        <div class="news-content">{{ item.content }}</div>
+    </div>
+    {% endfor %}
+    <a href="/news/5">More News</a>
+
+</body>
+
+</html>

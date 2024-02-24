@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>API Reader</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://gunraiders.com/images/favicon/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://gunraiders.com/images/favicon/apple-touch-icon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet" />
+    <meta name="viewport" content="initial-scale=1" />
+    <style>
+        @font-face {
+            font-family: "OpenSans";
+            font-style: normal;
+            font-weight: 700;
+            src: local("OpenSans Bold"), local("OpenSans-Bold"),
+                url(https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf) format("truetype");
+        }
+
+        body {
+            background-color: #000000;
+            margin: 0;
+        }
+
+        /* using div and a class was redundent, switched to semantic for easier reading */
+        header {
+            display: flex;
+            background-color: white;
+            color: black;
+            height: 170px;
+        }
+
+        /* CAUTION- IMAGE MAY BE OUT OF PLACE */
+        #logo {
+            width: 100px;
+            height: 100px;
+            margin-left: 59.75%;
+            transform: translate(0, 12px)
+        }
+
+        .fixed-image {
+            position: fixed;
+            /* This makes the image stay in the same place on the screen */
+            top: 63.75%;
+            /* This positions the image vertically in the middle of the screen */
+            right: 0;
+            /* This positions the image at the right edge of the screen */
+            transform: translateY(-50%);
+            /* This ensures the image is centered vertically */
+            height: 72.5%;
+            z-index: 1000;
+            /* This ensures the image stays on top of other content */
+        }
+
+
+        /* Study up on flex boxes! they are your friend! */
+        .wrapper {
+            display: flex;
+        }
+
+        /* Notice how I use specificity here to target links inside nav only */
+        nav {
+            float: left;
+            background-color: #000000;
+            width: 300px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav a {
+            font-size: 30px;
+            padding: 15px 15px;
+            display: block;
+            color: white;
+            text-decoration: none;
+            text-align: left;
+        }
+
+        nav a:hover {
+            background-color: white;
+            color: black;
+        }
+
+        /* Article will be used to define all content in here. It is reccomended to use everying above as a template for all pages because that will keep everything consistent. */
+        article {
+            flex-grow: 1;
+        }
+
+        .sub-header {
+            background-color: white;
+            font-size: 2em;
+            padding: .8em 1em;
+            opacity: 95%;
+            z-index: 0;
+            height: 50px;
+        }
+
+        /* Server grids */
+        .server-item {
+            display: grid;
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            text-align: center;
+            color: white;
+            /* Use this to change the gap between each server entry. */
+            margin-bottom: 0.5em;
+        }
+
+        #server-header {
+            margin: 1.5em 0em;
+            transform: translate(0px, 25px);
+        }
+
+        .server-item:not(#server-header) {
+            opacity: 0.8;
+        }
+
+        .server-item:not(#server-header):hover {
+            background-color: white;
+            color: black;
+        }
+
+        .lobby-heading {
+            padding-bottom: 0;
+            color: black;
+        }
+
+        .server-data-id,
+        .server-data-open,
+        .server-data-mode,
+        .server-data-map,
+        .server-data-playercount {
+            display: flex;
+            align-items: center;
+            /* This centers the content vertically */
+            justify-content: center;
+            /* Optional: This centers the content horizontally if needed */
+
+        }
+
+        .pagination {
+            color: black;
+            z-index: 3;
+            transform: translate(0, -700px);
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .servers {
+            transform: translate(0, -70px);
+        }
+
+        h1 {
+            text-align: left;
+            color: #000000;
+            margin: 0;
+            transform: translate(20px, 60px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* bro you didnt need to add it to all of them just the parent element... */
+        html {
+            font-family: "OpenSans", sans-serif;
+            font-weight: 700;
+            /* Ensure the bold weight is used */
+        }
+    </style>
+
+    <!-- IMPORTANT: scripts are normally put at the bottom of the page because they rely on elements. If you try and load the script in before the contents of the page, it will cause an error because there is nothing for it to look at. I recommend putting it right above the closing tag of your body. -->
+    <script>
+
+
+    </script>
+</head>
+
+<body>
+    <img src="" alt="Server Image" class="fixed-image" id="serverImage" style="display:none;">
+
+    <!-- header to nav, cleaned up and fixed. this is prepping for all the other parts. -->
+    <header>
+        <h1>GUN RAIDERS API READER</h1>
+        <a id="logo" href="/">
+            <img id="logo" src="https://gunraiders.com/share/assets/graphics/gr_logo_black.png"
+                alt="Gun Raiders Logo" />
+        </a>
+    </header>
+    <!-- I am using a div here to establish the relationship between the nav and the content -->
+    <div class="wrapper">
+        <nav>
+            <ul>
+                <a href="/player">PLAYER DATA</a>
+                <a href="/servers">SERVER LIST</a>
+                <a href="/leaderboard/score/weekly/0">LEADERBOARD</a>
+                <a href="/bans">BAN LIST</a>
+                <a href="/items">ITEMS</a>
+                <a href="/info">INFO</a>
+            </ul>
+        </nav>
+        <!-- I am using another semantic here to represent the content -->
+        <article>
+            <div class="sub-header">SERVERS</div>
+
+            <!-- ****** FOR FUTURE REFERENCE****** I recommend you wrap the server items and the images on the side in a div. By that div flex, you will ensure that the image will be displayed on the side. -->
+            <div class="servers">
+                <!-- No need to repeat server class, just repeat the bottom. -->
+                <div id="server-header" class="server-item">
+                    <div class="lobby-heading">ROOM</div>
+                    <div class="lobby-heading">OBJECTIVE</div>
+                    <div class="lobby-heading">MAP</div>
+                    <div class="lobby-heading">PLAYERS</div>
+                    <div class="lobby-heading">STATUS</div>
+                </div>
+                {% for item in server_items %}
+                <div class="server-item" onmouseover="showImage('{{ item.CustomProperties.sceneToLoad }}')"
+                    onmouseout="hideImage()">
+                    <div class="server-data-id">{{ item.Name }}</div>
+                    <div class="server-data-mode item">
+                        {% if item.CustomProperties.gameMode == 1 %}
+                        TEAM DEATHMATCH
+                        {% elif item.CustomProperties.gameMode == 2048 %}
+                        DONUT
+                        {% elif item.CustomProperties.gameMode == 64 %}
+                        FREE FOR ALL
+                        {% elif item.CustomProperties.gameMode == 2 %}
+                        CONTROL
+                        {% elif item.CustomProperties.gameMode == 128 %}
+                        HUB
+                        {% elif item.CustomProperties.gameMode == 8 %}
+                        BATTLE ROYALE
+                        {% elif item.CustomProperties.gameMode == 4096 %}
+                        CAPTURE THE POINT
+                        {% elif item.CustomProperties.gameMode == 8192 %}
+                        CHAT
+                        {% elif item.CustomProperties.gameMode == 1024 %}
+                        RAID THE ENEMY'S ORB
+                        {% else %}
+                        {{item.CustomProperties.gameMode}}
+                        {% endif %}
+                        {% if item.CustomProperties.difficulty == 1 %}
+                        (HARDCORE)
+                        {% endif %}
+                    </div>
+
+                    <div class="server-data-map item">{{ item.CustomProperties.sceneToLoad }}</div>
+                    <div class="server-data-playercount item">{{item.PlayerCount}}/{{item.MaxPlayers}}</div>
+                    <div class="server-data-open item">
+                        {% if item.IsOpen == false %}<p style="color:red;">CLOSED</p>
+                        {% elif item.CustomProperties.gameStarted == true %}<p>PLAYING</p>
+                        {% else %}<p style="color:orange;">WARMUP</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </article>
+    </div>
+    <script>
+        function showImage(sceneName) {
+            var imagePath = '/' + sceneName + '.png'; // Construct the path
+            var img = document.getElementById('serverImage');
+            img.src = imagePath; // Set the source of the image
+            img.style.display = 'block'; // Make sure the image is visible
+        }
+
+        function hideImage() {
+            var img = document.getElementById('serverImage');
+            img.style.display = 'none'; // Hide the image when not hovering
+        }
+    </script>
+</body>
+
+</html>
