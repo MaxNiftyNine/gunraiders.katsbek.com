@@ -184,8 +184,13 @@ def news(count=20):
 def servers():
     url = "https://go.gunraidersapi.com/api/v27/game/wholelist/plain/0.8.227_2.43/*/*"
     response = requests.get(url)
-    data = response.json().get ('data', [])
-    return render_template('servers.html',server_items=data)
+    data = response.json().get('data', [])
+    for item in data:
+        players = item['CustomProperties'].get('playersInRoom', [])
+        item['playersString'] = ", ".join(players)
+    print  (data)
+    return render_template('servers.html', server_items=data)
+
 
 @app.route('/leaderboard/<string:type>/<string:period>/<int:page>')
 def leaderboard(type='score', period='weekly', page=0):

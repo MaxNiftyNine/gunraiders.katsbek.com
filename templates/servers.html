@@ -179,6 +179,9 @@
 
 <body>
     <img src="" alt="Server Image" class="fixed-image" id="serverImage" style="display:none;">
+    <div id="mapName" class="map-name"
+        style="display:none; color:white; position:fixed; top:calc(63.75% + 100px); right:0; transform:translateY(-50%); z-index:1001; text-align:left;">
+        Map Name</div>
 
     <!-- header to nav, cleaned up and fixed. this is prepping for all the other parts. -->
     <header>
@@ -215,7 +218,7 @@
                     <div class="lobby-heading">STATUS</div>
                 </div>
                 {% for item in server_items %}
-                <div class="server-item" onmouseover="showImage('{{ item.CustomProperties.sceneToLoad }}')"
+                <div class="server-item" onmouseover="showImage('{{ item.CustomProperties.sceneToLoad }}'); showText('{{item.playersString}}');"
                     onmouseout="hideImage()">
                     <div class="server-data-id">{{ item.Name }}</div>
                     <div class="server-data-mode item">
@@ -265,11 +268,22 @@
             img.src = imagePath; // Set the source of the image
             img.style.display = 'block'; // Make sure the image is visible
         }
+        function showText(players) {
+    var mapNameElement = document.getElementById('mapName');
+    mapNameElement.innerText = players.replace(/, /g, '\n');
+    mapNameElement.style.display = 'block';
+}
+
+
 
         function hideImage() {
             var img = document.getElementById('serverImage');
             img.style.display = 'none'; // Hide the image when not hovering
+
+            var mapNameElement = document.getElementById('mapName');
+            mapNameElement.style.display = 'none'; // Also hide the map name
         }
+
     </script>
 </body>
 
