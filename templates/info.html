@@ -132,7 +132,7 @@
         #AllNews {
             overflow-y:scroll;
             height: 350px;
-            transform: translateY(-50px);
+            transform: translateY(-5px);
         }
         
     </style>
@@ -160,7 +160,7 @@
         <article>
             <div class="sub-header">INFO</div>
             <h1>{{ banner|safe }}</h1>
-            <h5>Newest Update: {{ ver }}</h5>
+            <h1 style = "text-align:right; font-size: 7.5pt; color: grey; transform: translateY(-10px);">{{ ver }}</h1>
             <div id = "AllNews">
             {% for item in news_items %}
             <div class="news-item">
