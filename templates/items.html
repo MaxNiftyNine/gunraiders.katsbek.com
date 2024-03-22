@@ -1,47 +1,177 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Items</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>API Reader</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://gunraiders.com/images/favicon/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://gunraiders.com/images/favicon/apple-touch-icon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet" />
+    <meta name="viewport" content="initial-scale=1" />
     <style>
-        body { font-family: Arial, sans-serif; background-color: #000000}
-        h1 {color: #ffffff}
+        @font-face {
+            font-family: "OpenSans";
+            font-style: normal;
+            font-weight: 700;
+            src: local("OpenSans Bold"), local("OpenSans-Bold"),
+                url(https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf) format("truetype");
+        }
+
+        body {
+            background-color: #000000;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            background-color: white;
+            color: black;
+            height: 170px;
+        }
+
+        #logo {
+            width: 100px;
+            height: 100px;
+            margin-left: 59.75%;
+            transform: translate(0, 12px)
+        }
+
+        
+
+
+        .wrapper {
+            display: flex;
+        }
+
+        nav {
+            float: left;
+            background-color: #000000;
+            width: 300px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav a {
+            font-size: 30px;
+            padding: 15px 15px;
+            display: block;
+            color: white;
+            text-decoration: none;
+            text-align: left;
+        }
+
+        nav a:hover {
+            background-color: white;
+            color: black;
+        }
+        article {
+            flex-grow: 1;
+        }
+
+        .sub-header {
+            background-color: white;
+            font-size: 2em;
+            padding: .8em 1em;
+            opacity: 95%;
+            z-index: 0;
+            height: 50px;
+        }
+
+        
+
+        h1 {
+            text-align: left;
+            color: #000000;
+            margin: 0;
+            transform: translate(20px, 60px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        html {
+            font-family: "OpenSans", sans-serif;
+            font-weight: 700;
+        }
+
         .item { background-color: #f4f4f4; margin-bottom: 20px; padding: 15px; border-radius: 8px; }
         .title { color: #333; font-size: 26px; margin-bottom: 5px; }
         .date { color: #666; font-size: 14px; margin-bottom: 10px; }
         .price { color: #454B1B; font-size: 20px; }
         .asset_id { color: #999; font-size: 10px; }
         .rarity { color: #111; font-size: 18px; }
-        a{ color: orange }
+
+        #AllItems {
+            overflow-y: auto;
+            height: 400px;
+            transform: translateY(-20px);
+        }
+        
+        #other{
+            transform: translateY(-50px);
+        }
+        #other a{
+            color: black;
+            text-decoration:none;
+            transform: translateY(-50px);
+        }
     </style>
 </head>
+
 <body>
-
-    <h1>Catalog</h1>
-
-    <form action="/items" method="get">
-        <input type="text" name="search" placeholder="Search items...">
-        <input type="submit" value="Search">
-    </form>
-
-    <div>
-        <a href="/items?order_by=price&order_type=asc">Order by Price (Ascending)</a>
-        |
-        <a href="/items?order_by=price&order_type=desc">Order by Price (Descending)</a>
-        |
-        <a href="/items?order_by=rarity&order_type=asc">Order by Rarity (Ascending)</a>
-        |
-        <a href="/items?order_by=rarity&order_type=desc">Order by Rarity (Descending)</a>
+    <header>
+        <h1>GUN RAIDERS API READER</h1>
+        <a id="logo" href="/">
+            <img id="logo" src="https://gunraiders.com/share/assets/graphics/gr_logo_black.png"
+                alt="Gun Raiders Logo" />
+        </a>
+    </header>
+    <div class="wrapper">
+        <nav>
+            <ul>
+                <a href="/player">PLAYER DATA</a>
+                <a href="/servers">SERVER LIST</a>
+                <a href="/leaderboard/score/weekly/0">LEADERBOARD</a>
+                <a href="/bans">BAN LIST</a>
+                <a href="/items">CATALOG</a>
+                <a href="/info">INFO</a>
+            </ul>
+        </nav>
+        <article>
+            <div class="sub-header">CATALOG</div>
+            <form action="/items" method="get">
+                <input type="text" name="search" placeholder="Search items...">
+                <input type="submit" value="Search">
+            </form>
+        
+            <div id = "other">
+                <a href="/items?order_by=price&order_type=asc">Order by Price (Ascending)</a>
+                |
+                <a href="/items?order_by=price&order_type=desc">Order by Price (Descending)</a>
+                |
+                <a href="/items?order_by=rarity&order_type=asc">Order by Rarity (Ascending)</a>
+                |
+                <a href="/items?order_by=rarity&order_type=desc">Order by Rarity (Descending)</a>
+                |
+                <a href="/items">Order by Date (Descending)</a>
+            </div>
+            <div id="AllItems">
+            {% for item in items %}
+            <div class="item">
+                <div class="title">{{ item.item_name }}</div>
+                <div class="price">{{ item.item_price }}RC</div>
+                <div class="rarity">{% if item.rarity == 0 %} Common {% elif item.rarity == 1 %} Uncommon {% elif item.rarity == 2 %} Rare {% elif item.rarity == 3 %} Epic {% elif item.rarity == 4 %} Legendary {% elif item.rarity == 5 %} Mythical {% endif %}</div>
+                <div class="date">{{ item.release_date }}</div>
+                <div class="asset_id">Asset_ID: {{ item.asset_id }}</div>
+            </div>
+            {% endfor %}
+            </div>
+        </article>
     </div>
-    
-    {% for item in items %}
-    <div class="item">
-        <div class="title">{{ item.item_name }}</div>
-        <div class="price">{{ item.item_price }}RC</div>
-        <div class="rarity">Rarity: {{ item.rarity }}</div>
-        <div class="date">{{ item.release_date }}</div>
-        <div class="asset_id">Asset_ID: {{ item.asset_id }}</div>
-    </div>
-    {% endfor %}
-
 </body>
+
 </html>

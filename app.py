@@ -57,7 +57,6 @@ def info():
     data = response.json()
 
     banner = data['data']['banner_locker']
-    banner = re.sub(r"<size=(.*?)>", r"<span style='font-size: \1;'>", banner)
     banner = re.sub(r"<color=(.*?)>", r"<span style='color: \1;'>", banner)
     banner = banner.replace("</size>", "</span>").replace("</color>", "</span>")
     
@@ -69,55 +68,6 @@ def ban_list():
     response = requests.get('https://go.gunraidersapi.com/api/v27/ban/all')
     data = response.json()['data']
     # THe following is the /bans page
-    html_template = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ban List</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: black;}
-        table { width: 100%; border-collapse: collapse; background-color: black;}
-        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; color: white;}
-        th { background-color: black; cursor: pointer; }
-    </style>
-    <script>
-        function sortTable(columnName) {
-            const searchParams = new URLSearchParams(window.location.search);
-            const currentOrder = searchParams.get('order') === 'asc' ? 'desc' : 'asc';
-            searchParams.set('sort_by', columnName);
-            searchParams.set('order', currentOrder);
-            window.location.search = searchParams.toString();
-        }
-    </script>
-</head>
-<body>
-    <h2>Ban List</h2>
-    <table id="banTable">
-        <thead>
-            <tr>
-                <th onclick="sortTable('player_id')">Hashed Player ID (SHA256)</th>
-                <th onclick="sortTable('ban_type')">Ban Type</th>
-                <th onclick="sortTable('end_date')">End Date</th>
-                <th onclick="sortTable('time_until_over')">Time Until Over</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in data %}
-            <tr>
-                <td>{{ item.player_id }}</td>
-                <td>{{ item.ban_type }}</td>
-                <td>{{ item.end_date }}</td>
-                <td>{{ item.time_until_over }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
-"""
     valid_data = []
     for item in data:
         item['time_until_over'] = calculate_time_until_over(item['end_date'])
@@ -128,7 +78,7 @@ def ban_list():
     order = request.args.get('order', 'asc')
     sorted_data = sort_data(valid_data, sort_by, ascending=order == 'asc')
 
-    return render_template_string(html_template, data=sorted_data)
+    return render_template('bans.html', data=sorted_data)
 
 @app.route('/items', methods=['GET', 'POST'])
 def items():
@@ -188,7 +138,6 @@ def servers():
     for item in data:
         players = item['CustomProperties'].get('playersInRoom', [])
         item['playersString'] = ", ".join(players)
-    print  (data)
     return render_template('servers.html', server_items=data)
 
 
@@ -281,7 +230,6 @@ def playerdata():
             + '\r\n--7e28AwlCWIt2VfjoWbqt4Uide9aab90SRdQ7bOjF\r\nContent-Disposition: form-data; name="platform"\r\nContent-Type: text/plain; encoding=utf-8\r\n\r\nOCULUS\r\n--7e28AwlCWIt2VfjoWbqt4Uide9aab90SRdQ7bOjF--\r\n'
         )
         aresponse = requests.post(url, headers=headers, data=data)
-        print(aresponse.text)
         url = "https://go.gunraidersapi.com/api/v27/bounty/get"
         headers = {
             "Host": "go.gunraidersapi.com",

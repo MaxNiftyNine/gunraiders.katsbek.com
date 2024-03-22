@@ -37,7 +37,7 @@
             transform: translate(0, 12px)
         }
 
-
+        
 
 
         .wrapper {
@@ -69,16 +69,8 @@
             background-color: white;
             color: black;
         }
-
         article {
             flex-grow: 1;
-        }
-
-        article h1 {
-            color: white;
-            font-size: 10pt;
-            width: 1200px;
-            transform: translateY(0px);
         }
 
         .sub-header {
@@ -90,7 +82,7 @@
             height: 50px;
         }
 
-
+        
 
         h1 {
             text-align: left;
@@ -105,46 +97,7 @@
             font-family: "OpenSans", sans-serif;
             font-weight: 700;
         }
-
-        .news-item {
-            background-color: #f4f4f4;
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        .news-title {
-            color: #333;
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .news-date {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .news-content {
-            color: #333;
-            font-size: 16px;
-        }
-
-        #AllNews {
-            overflow-y: scroll;
-            height: 450px;
-            transform: translateY(5px);
-        }
     </style>
-    <script>
-        function loadMore() {
-            let newCount = parseInt('{{ count }}') + 5;
-            if (newCount > 200) {
-                newCount = 200;
-            }
-            window.location.href = `/news/${newCount}`;
-        }
-    </script>
 </head>
 
 <body>
@@ -162,22 +115,12 @@
                 <a href="/servers">SERVER LIST</a>
                 <a href="/leaderboard/score/weekly/0">LEADERBOARD</a>
                 <a href="/bans">BAN LIST</a>
-                <a href="/items">CATALOG</a>
+                <a href="/items">ITEMS</a>
                 <a href="/info">INFO</a>
             </ul>
         </nav>
         <article>
-            <div class="sub-header">NEWS</div>
-            <div id = "AllNews">
-            {% for item in news_items %}
-            <div class="news-item">
-                <div class="news-title">{{ item.title }}</div>
-                <div class="news-date">{{ item.created.split('T')[0] }}</div>
-                <div class="news-content">{{ item.content }}</div>
-            </div>
-            {% endfor %}
-            <button onclick="loadMore()">Load More</button>
-            </div>
+            <div class="sub-header">SERVERS</div>
         </article>
     </div>
 </body>

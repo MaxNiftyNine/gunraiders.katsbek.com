@@ -74,13 +74,6 @@
             flex-grow: 1;
         }
 
-        article h1 {
-            color: white;
-            font-size: 10pt;
-            width: 1200px;
-            transform: translateY(0px);
-        }
-
         .sub-header {
             background-color: white;
             font-size: 2em;
@@ -106,43 +99,37 @@
             font-weight: 700;
         }
 
-        .news-item {
-            background-color: #f4f4f4;
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: black;
         }
 
-        .news-title {
-            color: #333;
-            font-size: 18px;
-            margin-bottom: 5px;
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            color: white;
         }
 
-        .news-date {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
+        th {
+            background-color: black;
+            cursor: pointer;
         }
 
-        .news-content {
-            color: #333;
-            font-size: 16px;
-        }
-
-        #AllNews {
+        #banlist {
             overflow-y: scroll;
             height: 450px;
-            transform: translateY(5px);
         }
     </style>
     <script>
-        function loadMore() {
-            let newCount = parseInt('{{ count }}') + 5;
-            if (newCount > 200) {
-                newCount = 200;
-            }
-            window.location.href = `/news/${newCount}`;
+        function sortTable(columnName) {
+            const searchParams = new URLSearchParams(window.location.search);
+            const currentOrder = searchParams.get('order') === 'asc' ? 'desc' : 'asc';
+            searchParams.set('sort_by', columnName);
+            searchParams.set('order', currentOrder);
+            window.location.search = searchParams.toString();
         }
     </script>
 </head>
@@ -167,16 +154,28 @@
             </ul>
         </nav>
         <article>
-            <div class="sub-header">NEWS</div>
-            <div id = "AllNews">
-            {% for item in news_items %}
-            <div class="news-item">
-                <div class="news-title">{{ item.title }}</div>
-                <div class="news-date">{{ item.created.split('T')[0] }}</div>
-                <div class="news-content">{{ item.content }}</div>
-            </div>
-            {% endfor %}
-            <button onclick="loadMore()">Load More</button>
+            <div class="sub-header">BAN LIST</div>
+            <div id = "banlist">
+            <table id="banTable">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('player_id')">HASHED PLAYER ID (SHA256)</th>
+                        <th onclick="sortTable('ban_type')">BAN TYPE</th>
+                        <th onclick="sortTable('end_date')">END DATE</th>
+                        <th onclick="sortTable('time_until_over')">TIME UNTIL OVER</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td>{{ item.player_id | upper }}</td>
+                        <td>{{ item.ban_type | upper }}</td>
+                        <td>{{ item.end_date | upper }}</td>
+                        <td>{{ item.time_until_over | upper }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             </div>
         </article>
     </div>

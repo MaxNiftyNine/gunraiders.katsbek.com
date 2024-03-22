@@ -2,15 +2,108 @@
 <html>
 
 <head>
-    <title>Info</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>API Reader</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://gunraiders.com/images/favicon/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://gunraiders.com/images/favicon/apple-touch-icon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet" />
+    <meta name="viewport" content="initial-scale=1" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: black
+        @font-face {
+            font-family: "OpenSans";
+            font-style: normal;
+            font-weight: 700;
+            src: local("OpenSans Bold"), local("OpenSans-Bold"),
+                url(https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf) format("truetype");
         }
 
-        h1 {
+        body {
+            background-color: #000000;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            background-color: white;
+            color: black;
+            height: 170px;
+        }
+
+        #logo {
+            width: 100px;
+            height: 100px;
+            margin-left: 59.75%;
+            transform: translate(0, 12px)
+        }
+
+
+
+
+        .wrapper {
+            display: flex;
+        }
+
+        nav {
+            float: left;
+            background-color: #000000;
+            width: 300px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav a {
+            font-size: 30px;
+            padding: 15px 15px;
+            display: block;
             color: white;
+            text-decoration: none;
+            text-align: left;
+        }
+
+        nav a:hover {
+            background-color: white;
+            color: black;
+        }
+
+        article {
+            flex-grow: 1;
+        }
+
+        article h1{
+            color:white;
+            font-size: 10pt;
+            width: 1200px;
+            transform: translateY(0px);
+        }
+
+        .sub-header {
+            background-color: white;
+            font-size: 2em;
+            padding: .8em 1em;
+            opacity: 95%;
+            z-index: 0;
+            height: 50px;
+        }
+
+
+
+        h1 {
+            text-align: left;
+            color: #000000;
+            margin: 0;
+            transform: translate(20px, 60px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        html {
+            font-family: "OpenSans", sans-serif;
+            font-weight: 700;
         }
 
         .news-item {
@@ -36,27 +129,50 @@
             color: #333;
             font-size: 16px;
         }
-
-        a {
-            color: orange;
+        #AllNews {
+            overflow-y:scroll;
+            height: 350px;
+            transform: translateY(-50px);
         }
+        
     </style>
 </head>
 
 <body>
-
-    <h1>{{ banner|safe }}</h1>
-    <h5>Newest Update: {{ ver }}</h5>
-
-    {% for item in news_items %}
-    <div class="news-item">
-        <div class="news-title">{{ item.title }}</div>
-        <div class="news-date">{{ item.created.split('T')[0] }}</div>
-        <div class="news-content">{{ item.content }}</div>
+    <header>
+        <h1>GUN RAIDERS API READER</h1>
+        <a id="logo" href="/">
+            <img id="logo" src="https://gunraiders.com/share/assets/graphics/gr_logo_black.png"
+                alt="Gun Raiders Logo" />
+        </a>
+    </header>
+    <div class="wrapper">
+        <nav>
+            <ul>
+                <a href="/player">PLAYER DATA</a>
+                <a href="/servers">SERVER LIST</a>
+                <a href="/leaderboard/score/weekly/0">LEADERBOARD</a>
+                <a href="/bans">BAN LIST</a>
+                <a href="/items">CATALOG</a>
+                <a href="/info">INFO</a>
+            </ul>
+        </nav>
+        <article>
+            <div class="sub-header">INFO</div>
+            <h1>{{ banner|safe }}</h1>
+            <h5>Newest Update: {{ ver }}</h5>
+            <div id = "AllNews">
+            {% for item in news_items %}
+            <div class="news-item">
+                <div class="news-title">{{ item.title }}</div>
+                <div class="news-date">{{ item.created.split('T')[0] }}</div>
+                <div class="news-content">{{ item.content }}</div>
+            </div>
+            {% endfor %}
+            <a href="/news/5">More News</a>
+            </div>
+        </article>
     </div>
-    {% endfor %}
-    <a href="/news/5">More News</a>
-
 </body>
 
 </html>
