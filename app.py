@@ -132,7 +132,7 @@ def news(count=20):
 
 @app.route('/servers')
 def servers():
-    url = "https://go.gunraidersapi.com/api/v27/game/wholelist/plain/0.8.227_2.43/*/*"
+    url = "https://go.gunraidersapi.com/api/v28/game/wholelist/plain/0.8.227_2.43/*/*"
     response = requests.get(url)
     data = response.json().get('data', [])
     for item in data:
@@ -241,6 +241,7 @@ def playerdata():
         }
         data = ""
         response_json = aresponse.json()
+        print (response_json)
         try:
             access_token = response_json["data"]["access_token"]
         except KeyError:
